@@ -1,0 +1,121 @@
+<%
+    let timeSince = (date) => {
+        var seconds = Math.floor((new Date() - date) / 1000);
+        var interval = seconds / 31536000;
+
+        if (interval > 1) {
+            return Math.floor(interval) + " year/s ago";
+        }
+        interval = seconds / 2592000;
+        if (interval > 1) {
+            return Math.floor(interval) + " month/s ago";
+        }
+        interval = seconds / 86400;
+        if (interval > 1) {
+            return Math.floor(interval) + " day/s ago";
+        }
+        interval = seconds / 3600;
+        if (interval > 1) {
+            return Math.floor(interval) + " hour/s ago";
+        }
+        interval = seconds / 60;
+        if (interval > 1) {
+            return Math.floor(interval) + " minute/s ago";
+        }
+        return Math.floor(seconds) + " second/s ago";
+    }
+%>
+<%- include('./partials/header'); %> 
+        <div class="container">
+<%          if(error_message.length != 0) {     %>
+                <div class="alert alert-danger" role="alert">
+                <span class="sr-only">Error:</span>               
+<%              for(let i=0; i<error_message.length; i++) {    %>
+                    <p>  <%= error_message[i] %> </p>  
+<%              }   %> 
+                </div>
+<%          }       %>
+<%          if(success_message.length != 0) {     %>
+                <div class="alert alert-success" role="alert">
+                <span class="sr-only">Success:</span>               
+<%              for(let i=0; i<success_message.length; i++) {    %>
+                    <p>  <%= success_message[i] %> </p>  
+<%              }   %> 
+                </div>
+<%          }       %> 
+            <div class="row">
+                <h1><%= user_data[0].first_name + " " + user_data[0].last_name%></h1>
+            </div>
+            <div class="row">
+                <p>Registered on: <%= user_data[0].created_at %></p>
+                <p>User ID: <%= user_data[0].id %></p>
+                <p>Email Address: <%= user_data[0].email %></p>
+                <p>Description: <%= user_data[0].description %></p>
+            </div>
+            <div class="row">
+                <h2>Leave a message for <%= user_data[0].first_name %></h2>
+                <form role="form" class="message_form" action="/post_message/<%= user_data[0].id %>" method="post">
+                    <div class="form-group">
+                        <textarea id="textarea_message" class="form-control" rows="4" name="message"></textarea>
+                    </div>
+                    <input type="hidden" name="page_user_id" value="<%= user_data[0].id %>">
+                    <input type="hidden" name="created_user_id" value="<%= online_user %>">
+                    <button class="col-md-2 col-md-offset-10 btn btn-primary button_margin" type="submit">Post Message</button>
+                </form>
+            </div>
+            <div id="all_messages">
+<%              if(messages.length != 0) {    %>
+<%                  for(let i=0; i<messages.length; i++) {  %>
+                        <div class="row">
+                            <p class="col-md-10">
+                                <a href="/profile/<%= messages[i].user_id %>">
+<% 				                    if(messages[i].user_id !== online_user) { %>
+                                        <%= messages[i].message_name %>
+<%                                  } else {      %>
+                                        You
+<%                                  }     %>
+                                </a> wrote:
+                            </p>
+                            <p class="col-md-2 text-right">  <%= timeSince(messages[i].created_at) %>  </p>
+                        </div>
+                        <div class="row message"><%= messages[i].message %></div>
+                        <div class="message_<%= messages[i].id %>">
+<%                          if(comments.length != 0) {    %>
+<%                              for(let j=0; j<comments.length; j++) {  %>
+<%                                  if(comments[j].message_id == messages[i].id ) {   %>
+                                        <div class="row">
+                                            <p class="col-md-9 col-md-offset-1">
+                                                <a href="#">
+<%							                        if(comments[j].created_user_id == online_user) {    %>
+                                                        You
+<%                                                  } else {      %>
+                                                        <%= comments[j].comment_name %> 
+<%                                                  }   %> 
+                                                </a> wrote:
+                                            </p>
+                                            <p class="col-md-2 text-right"> <%= timeSince(comments[j].created_at) %> </p>
+                                        </div>
+                                        <div class="row">
+                                            <div class="outline comment col-md-11 col-md-offset-1"><%= comments[j].comment %></div>
+                                        </div>
+<%						            }
+                                }
+                            } 
+%>
+                        </div>
+                        <form role="form" class="col-md-offset-1" action="/post_comment/<%= messages[i].id %>" method="post">
+                            <div class="row form-group">
+                                <textarea class="form-control" name="comment"></textarea>
+                            </div>
+                            <input type="hidden" name="page_user_id" value="<%= user_data[0].id %>">
+                            <input type="hidden" name="created_user_id" value="<%= online_user %>">
+                            <div class="row">
+                                <button class="col-md-2 col-md-offset-10 btn btn-success button_margin" type="submit">Post Comment</button>
+                            </div>
+                        </form>
+<%		            }   %>
+<%              }   %>
+            </div>
+        </div>
+    </body>
+</html>

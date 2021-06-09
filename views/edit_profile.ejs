@@ -1,0 +1,62 @@
+<%- include('./partials/header'); %> 
+<div class="container">
+    <h1>Edit Profile</h1>
+<%      if(error_message.length != 0) {     %>
+        <div class="alert alert-danger" role="alert">
+        <span class="sr-only">Error:</span>               
+<%          for(let i=0; i<error_message.length; i++) {    %>
+                <p>  <%= error_message[i] %> </p>  
+<%          }   %> 
+        </div>
+<%      }       %>
+<%      if(success_message.length != 0) {     %>
+            <div class="alert alert-success" role="alert">
+            <span class="sr-only">Success:</span>               
+<%              for(let i=0; i<success_message.length; i++) {    %>
+                    <p>  <%= success_message[i] %> </p>  
+<%              }   %> 
+            </div>
+<%      }       %> 
+    <div class="row">
+        <form role="form" class="col-md-4 multiple" action="/edit_profile_details" method="post">
+            <legend>Edit Information</legend>
+            <div class="form-group">
+                <label for="email">Email Address:</label>
+                <input class="form-control" type="text" name="email" value="<%= data[0].email %>">
+            </div>
+            <div class="form-group">
+                <label for="first_name">First Name:</label>
+                <input class="form-control" type="text" name="first_name" value="<%= data[0].first_name %>">
+            </div>
+            <div class="form-group">
+                <label for="last_name">Last Name:</label>
+                <input class="form-control" type="text" name="last_name" value="<%= data[0].last_name %>">
+            </div>
+            <input type="hidden" name="id" value="<%= data[0].id %>">
+            <button class="btn btn-primary" type="submit" name="submit">Save</button>
+        </form>
+        <form role="form" class="col-md-4 col-md-offset-2 multiple" action="/edit_password_profile" method="post">
+            <legend>Change Password</legend>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input class="form-control" type="password" name="password">
+            </div>
+            <div class="form-group">
+                <label for="confirm_password">Confirm Password:</label>
+                <input class="form-control" type="password" name="confirm_password">
+            </div>
+            <input type="hidden" name="id" value="<%= data[0].id %>">
+            <button class="btn btn-primary" type="submit" name="submit">Update Password</button>
+        </form>
+    </div>
+    <form role="form" class="multiple" action="/edit_description" method="post">
+        <legend>Edit Description</legend>
+        <div class="form-group">
+            <textarea class="form-control" name="description"><%= data[0].description %></textarea>
+        </div>
+        <input type="hidden" name="id" value="<%= data[0].id %>">
+        <button class="btn btn-primary" type="submit" name="submit">Save</button>
+    </form>
+</div>
+</body>
+</html>

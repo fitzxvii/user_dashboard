@@ -1,0 +1,40 @@
+.jumbotron {
+	background-color: lightblue;
+}
+
+.multiple {
+	margin-top: 25px;
+	margin-bottom: 25px;
+}
+
+.message {
+	min-height: 35px;
+	padding: 15px;
+	margin-bottom: 25px;
+	background-color: #DDD;
+	border-radius: 5px;
+}
+
+.button_margin {
+	margin-bottom: 35px;
+}
+
+.comment {
+	background-color: #FFF;
+	min-height: 35px;
+	padding: 15px;
+	margin-bottom: 25px;
+	border-radius: 5px;
+}
+
+.footer {
+	margin-top: 75px;
+	height: 40px;
+}
+
+.alert {
+	display: block;
+	width: 75%;
+	margin: 10px auto;
+}
+
